@@ -6,7 +6,8 @@ public class Point{
     public Point(int x, int y){
 
         this.x = x;
-        this.y = y;;
+        this.y = y;
+
     }
 
     public double calulacteDistance(Point other){
@@ -16,6 +17,11 @@ public class Point{
         double distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 
         return distance;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
     }
 
 }
