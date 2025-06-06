@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Truck {
     
@@ -6,36 +9,33 @@ public class Truck {
     public final String color;
     public Point location;
 
+    public List<Stop> stops = new ArrayList<>();
+    public List<Point> route = new ArrayList<>();
+    public List<Order> assignedOrders = new ArrayList<>();
+
+
+
     int[] capacities = {1000, 1500, 2000};
     String[] colors = {"green", "blue", "red"};
 
     public Truck(Point location){
         this.location = location;
-        int randomIndex = (int)(Math.random() * capacities.length);
+        int randomIndex = ThreadLocalRandom.current().nextInt(0, 3);
         this.maxCapacity = capacities[randomIndex];
         this.color = colors[randomIndex];
 
     }
 
-    public boolean addWarens( Ware ware){
-        if(capacity + ware.ware_capacity <= maxCapacity){
-            capacity += ware.ware_capacity;
-
-            return true;
-        }else {
-            return false;
-        }
-    }
-
 
     @Override
     public String toString() {
-        return "Truck{" +
-               "capacity=" + capacity +
-               ", maxCapacity=" + maxCapacity +
-               ", location=" + location +
-               ", color=" + color +
-               '}';
+        return "Truck " + this.hashCode() % 10000 + " {\n" +
+                "  capacity=" + capacity + "kg,\n" +
+                "  maxCapacity=" + maxCapacity + "kg,\n" +
+                "  location=" + location + ",\n" +
+                "  color=" + color + "\n" +
+                '}';
     }
+
 
 }

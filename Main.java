@@ -1,53 +1,57 @@
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
 
-    public static int RandomMagazine(){
-        int max = 0;
-        int min = 4;
-        int range = max - min + 1;
-
-        return (int)(Math.random() * range) + min;
-    }
+    public static List<Order> orders = new ArrayList<>();
+    public static List<Warehouse> warehouseList = new ArrayList<>();
 
     public static void main(String[] args) {
 
-        ArrayList<Truck> trucks = new ArrayList<>();
+        List<Truck> trucks = new ArrayList<>();
         
-        Map map = new Map();
+        CityMap cityMap = new CityMap();
 
-        int max = 100;
-        int min = 1;
-        int range = max - min + 1;
 
-        for(int i = 0; i <= 5; i++){
-            int randX = (int)(Math.random() * range) + min;
-            int randY = (int)(Math.random() * range) + min;
-            map.addPoint(randX, randY);
 
+
+        // 1. Zestaw poczatkowych punktow do ktorych nalezy przywiezc towar
+        for(int i = 0; i <= 50; i++){
+            cityMap.addpoints(Point.getRandomPoint(false));
         }
 
-        System.out.println(map.deliveryPoints);
+        System.out.println("Delivery points: " + cityMap.points);
 
-        Ware ware1 = map.addWareAt(10, 15);
-        Ware ware2 = map.addWareAt(50, 60);
-        Ware ware3 = map.addWareAt(90, 25);
+        for (int i = 0; i < 5; i++) {
+            Warehouse wh = cityMap.addWareAt(Point.getRandomPoint(true));
+            System.out.println(wh);
+            warehouseList.add(wh);
+        }
 
-        System.out.println(ware1);
-        System.out.println(ware2);
-        System.out.println(ware3);
-        
-
-        for(int i = 0; i  <= 6; i++){
-            Point warehouse = map.deliveryPoints.get(RandomMagazine());
-
-            Point location = warehouse;
-            Truck truck =  new Truck(location);
+        int truckNum = ThreadLocalRandom.current().nextInt(3, 7);
+        for(int i = 0; i  <= truckNum-1; i++){
+            Truck truck =  new Truck(warehouseList.get(ThreadLocalRandom.current().nextInt(0, 5)).location);
             trucks.add(truck);
         }
 
         System.out.println(trucks);
 
+        for(Point point : cityMap.points){
+            if(point.pointType == PointType.WAREHOUSE)
+                continue;
+            Order order = new Order(ThreadLocalRandom.current().nextInt(100, 201));
+            if(point.pointType == PointType.TAKEAWAY)
+                order.sourcePoint = point;
+            else
+                order.targetPoint = point;
+            System.out.println(order);
+            orders.add(order);
+        }
+
+        RoutePlanner.assignOrdersToTrucks(Main.orders, trucks, warehouseList);
 
     }
+
+
 }

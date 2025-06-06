@@ -4,8 +4,10 @@ public class Order {
     public int orangeKg;
     public int uraniumKg;
     public int tunaKg;
-
     public int totalKg;
+
+    public Point sourcePoint;
+    public Point targetPoint;
 
     public Order(int totalKg) {
         Random rand = new Random();
@@ -25,12 +27,15 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
-            "orangeKg=" + orangeKg +
-            ", uraniumKg=" + uraniumKg +
-            ", tunaKg=" + tunaKg +
-            ", totalKg=" + totalKg +
-            '}';
+        return "Order "+ this.hashCode() % 10000 +"{\n" +
+                "  orangeKg=" + orangeKg + ",\n" +
+                "  uraniumKg=" + uraniumKg + ",\n" +
+                "  tunaKg=" + tunaKg + ",\n" +
+                "  totalKg=" + totalKg + ",\n" +
+                "  sourcePoint=" + sourcePoint + ",\n" +
+                "  targetPoint=" + targetPoint + "\n" +
+                '}';
     }
+
 
 }
